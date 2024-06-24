@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,41 +16,39 @@
     <!-- Global CSS (CSS rules you want applied to all pages) -->
     <link rel="stylesheet" href="style/global.css">
 
-    <!-- Page-specific CSS -->
-    <link rel="stylesheet" href="style/landing.css">
-
-    <title>Login to the Microblog Network!</title>
+    <title>Welcome to Lunchbox!</title>
 
     <!-- Run BEFORE page is finished loading (before window.onload - don't add the `defer` attribute): -->
     <script src="scripts/auth.js"></script>
     <script src="scripts/navigation.js"></script>
-    <script>
-        if (isLoggedIn() === true) window.location.replace("/posts.html");
-    </script>
 </head>
+
 <body>
 
-    <header>
-        <h1>Welcome to <code>YOUR MICROBLOG NETWORK</code></h1>
+    <header class="text-center my-4">
+        <h1>Welcome to Lunchbox!</h1>
     </header>
 
-    <main>
+    <main class="d-flex flex-column justify-content-center align-items-center" style="height: 80vh;">
+        <div class="image-area">
+            <img src="imgs/LogoTransparent.png" alt="Display Image" class="img-fluid custom-img">
+        </div>
+        <div class="card">
+            <form id="login">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" class="form-control" placeholder="Enter username" minlength="3">
+                </div>
 
-        <form id="login">
-            <div>
-                <label for="username">Username</label>
-                <input type="text" id="username" minlength="3">
-            </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Enter password" minlength="6">
+                </div>
 
-            <div>
-                <label for="password">Password</label>
-                <input type="password" id="password" minlength="6">
-            </div>
-
-            <button id="loginButton" type="submit" onclick="login()">Login</button>
-            
-        </form>
-        <button id="registerButton" type="submit" onclick="redirWindow('/register.html')">Register</button> <!-- Create Functionality -->
+                <button id="loginButton" type="submit" class="btn btn-primary w-100" onclick="login()">Login</button>
+            </form>
+            <button id="registerButton" type="button" class="btn btn-secondary w-100 mt-3" onclick="redirWindow('/register.html')">Register</button>
+        </div>
     </main>
 
     <footer></footer>
@@ -57,4 +56,5 @@
     <!-- Page-specific code -->
     <script src="scripts/landing.js"></script>
 </body>
+
 </html>
