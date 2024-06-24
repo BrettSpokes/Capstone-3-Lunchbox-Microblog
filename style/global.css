@@ -4,32 +4,59 @@
     box-sizing: border-box;
 }
 
+.concert-one-regular {
+    font-family: "Concert One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
 :root {
     font-size: 1rem;
 }
 
 body {
-    background-color: #5ac9f6;
+    background-color: #5ac9f6; /* Default background color */
     margin: 0;
     padding: 0;
+    transition: background-color 0.5s ease-in-out; /* Smooth transition for background color */
 }
 
 .card {
-    background-color: #ff4d4d;
     border-radius: 15px;
-    color: white;
     padding: 40px;
+    min-width: 300px; /* Ensure the card has a minimum width */
+    max-width: 400px; /* Set a maximum width for the card */
+    border: 8px solid #002043; /* Thick border */
+    transition: background-color 0.5s ease-in-out; /* Smooth transition for background color */
 }
 
-input[type="text"], input[type="password"] {
-    background: transparent;
-    border: 2px solid black;
+.login-card {
+    background: #ff4d4d; /* Red gradient for login card */
+    color: white;
+}
+
+.registration-card {
+    background: #5ac9f6; /* Blue gradient for registration card */
+    color: white;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="date"] {
+    background: rgba(0, 0, 0, 0.3); /* Black with 0.3 alpha */
+    border: 2px solid transparent;
     color: white;
     padding: 10px;
     font-size: 1.2rem;
 }
 
-input::placeholder {
+input[type="text"]::placeholder,
+input[type="password"]::placeholder,
+input[type="date"]::placeholder {
     color: lightgrey;
 }
 
@@ -62,13 +89,54 @@ button:hover {
     margin: 20px 0;
 }
 
-.image-area img {
+.custom-img {
     max-width: 100%;
     height: auto;
     border-radius: 10px;
+    min-width: 300px; /* Ensure the image has a minimum width same as the card */
+    max-width: 400px; /* Ensure the image has a maximum width same as the card */
 }
 
 header h1 {
     font-weight: bold;
     color: white;
+}
+
+.form-container {
+    position: relative;
+    height: 400px; /* Adjust height as needed */
+    overflow: hidden;
+}
+
+.form-card {
+    display: flex; /* Ensure contents are flexbox */
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    transition: transform 0.5s ease-in-out;
+}
+
+.form-card.slide-up {
+    transform: translateY(-0%);
+}
+
+.form-card.slide-down {
+    transform: translateY(110%);
+}
+
+.red-background {
+    background-color: #ff4d4d !important; /* Override for body background */
+}
+
+.blue-background {
+    background-color: #5ac9f6 !important; /* Override for body background */
+}
+
+.gradient-transition {
+    background: linear-gradient(to bottom right, #ff4d4d, #ff1a1a); /* Initial gradient */
+}
+
+/* Class to disable scrolling */
+.no-scroll {
+    overflow: hidden;
 }
