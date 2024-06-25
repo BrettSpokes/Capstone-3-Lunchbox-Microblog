@@ -143,7 +143,7 @@ fetch("http://microbloglite.us-east-2.elasticbeanstalk.com/api/users", requestOp
   .then((response) => response.text())
   .then((result) => {
     console.log(result);
-    login(loginData);
+    login(registerData);
   })
   .catch((error) => console.error(error));
 

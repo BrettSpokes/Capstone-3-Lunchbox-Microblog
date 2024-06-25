@@ -36,17 +36,18 @@ body {
 
 .login-card {
     background: #ff4d4d; /* Red gradient for login card */
-    color: white;
 }
 
 .registration-card {
     background: #5ac9f6; /* Blue gradient for registration card */
+   
+}
+
+.login-card, .registration-card{
     color: white;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="date"] {
+.form-element {
     background: rgba(0, 0, 0, 0.3); /* Black with 0.3 alpha */
     border: 2px solid transparent;
     color: white;
@@ -54,9 +55,7 @@ input[type="date"] {
     font-size: 1.2rem;
 }
 
-input[type="text"]::placeholder,
-input[type="password"]::placeholder,
-input[type="date"]::placeholder {
+.form-element::placeholder {
     color: lightgrey;
 }
 
@@ -102,27 +101,7 @@ header h1 {
     color: white;
 }
 
-.form-container {
-    position: relative;
-    height: 400px; /* Adjust height as needed */
-    overflow: hidden;
-}
 
-.form-card {
-    display: flex; /* Ensure contents are flexbox */
-    flex-direction: column; /* Stack items vertically */
-    justify-content: center; /* Center vertically */
-    align-items: center; /* Center horizontally */
-    transition: transform 0.5s ease-in-out;
-}
-
-.form-card.slide-up {
-    transform: translateY(-0%);
-}
-
-.form-card.slide-down {
-    transform: translateY(110%);
-}
 
 .red-background {
     background-color: #ff4d4d !important; /* Override for body background */
@@ -139,4 +118,30 @@ header h1 {
 /* Class to disable scrolling */
 .no-scroll {
     overflow: hidden;
+}
+
+.hide-element {
+    display: none; /* Hide the element */
+}
+
+.form-container {
+    position: relative;
+    height: 400px; /* Adjust height as needed */
+    overflow: hidden;
+}
+
+.form-card {
+    display: flex; /* Ensure contents are flexbox */
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */ 
+    transition: transform 0.5s ease-in-out;
+}
+
+.form-card.slide-up {
+    transform: translateY(-0%);
+}
+
+.form-card.slide-down {
+    transform: translateY(110%);
 }

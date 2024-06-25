@@ -20,7 +20,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
 
 
-    <title >Welcome to Lunchbox!</title>
+    <title>Welcome to Lunchbox!</title>
 
     <!-- Run BEFORE page is finished loading (before window.onload - don't add the `defer` attribute): -->
     <script src="scripts/auth.js"></script>
@@ -31,30 +31,87 @@
 
     <header class="text-center my-4 concert-one-regular">
         <h1>Welcome to Lunchbox!</h1>
-    </header>
 
-    <main class="d-flex flex-column justify-content-center align-items-center" style="height: 80vh;">
         <div class="image-area mt-5">
             <img src="imgs/LogoTransparent.png" alt="Display Image" class="img-fluid custom-img">
         </div>
+    </header>
+
+    <main class="d-flex flex-column justify-content-center align-items-center mb-5" style="height: auto">
+        
         <div class="card form-card" id="form-card">
-            <form id="login">
-                <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" id="username" class="form-control" placeholder="Enter username" minlength="3">
-                </div>
+            <div id="loginFormContainer" class="">
+                <form id="login">
+                    <div class="mb-3">
+                        <label for="username" class="form-label ">Username</label>
+                        <input type="text" id="username" class="form-control form-element" placeholder="Enter Username"
+                            minlength="3">
+                    </div>
 
-                <div class="mb-3 ">
-                    <label for="password" class="form-label mt-2">Password</label>
-                    <input type="password" id="password" class="form-control" placeholder="Enter password"
-                        minlength="6">
-                </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label mt-2">Password</label>
+                        <input type="password" id="password" class="form-control form-element"
+                            placeholder="Enter Password" minlength="6">
+                    </div>
 
-                <button id="loginButton" type="submit" class="btn btn-primary w-100 mt-3"
-                    onclick="login()">Login</button>
-            </form>
-            <button id="registerButton" type="button" class="btn btn-secondary w-100 mt-3">Register</button>
+                    <button id="loginButton" type="submit" class="btn btn-primary w-100 mt-3"
+                        onclick="login()">Login</button>
+                </form>
+                <button id="registerFormButton" type="button" class="btn btn-secondary w-100 mt-3">Register</button>
+            </div>
+                <div id="registerFormContainer" class="hide-element">
 
+                    <form id="register">
+                        <!-- Form Username -->
+                        <div class="mb-3 mx-4">
+                            <label for="reg_username" class="form-label">Username</label>
+                            <input type="text" id="reg_username" class="form-control form-element"
+                                placeholder="Enter Username" minlength="3">
+                        </div>
+
+                        <!-- Form Firstname -->
+                        <div class="mb-3 mx-4">
+                            <label for="reg_firstname" class="form-label">First Name</label>
+                            <input type="text" id="reg_firstname" class="form-control form-element"
+                                placeholder="Enter First Name">
+                        </div>
+
+                        <!-- Form Lastname -->
+                        <div class="mb-3 mx-4">
+                            <label for="reg_lastname" class="form-label">Last Name</label>
+                            <input type="text" id="reg_lastname" class="form-control form-element"
+                                placeholder="Enter Last Name">
+                        </div>
+
+                        <!-- Form Mobile Number or Email -->
+                        <div class="mb-3 mx-4">
+                            <label for="reg_contact">Mobile Number or Email</label>
+                            <input type="text" id="reg_contact" class="form-control form-element" placeholder="Enter Email or Number">
+                        </div>
+
+                        <!-- Form Password -->
+                        <div class="mb-3 mx-4">
+                            <label for="reg_password">Password</label>
+                            <input type="password" id="reg_password" minlength="6" class="form-control form-element"
+                            placeholder="Enter password">
+                        </div>
+
+                        <!-- Form Birthday -->
+                        <div class="mb-3 mx-4">
+                            <label for="reg_birthday">Birthday</label>
+                            <input type="date" id="reg_birthday" class="form-control form-element" max="2008-12-31">
+                        </div>
+
+                        <div class="mb-3 mx-4">
+                            <button id="createUserButton" type="submit" class="btn btn-primary w-100 mt-3">Create
+                                Account</button>
+                        </div>
+                        <div class="mb-3 mx-4">
+                            <button id="loginFormButton" type="button" class="btn btn-secondary w-100">Login</button>
+                        </div>
+                        
+                    </form>
+            </div>
         </div>
     </main>
 

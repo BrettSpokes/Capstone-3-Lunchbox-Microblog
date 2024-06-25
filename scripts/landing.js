@@ -23,9 +23,37 @@ loginForm.onsubmit = function (event) {
     login(loginData);
 };
 
+const registerForm = document.querySelector("#register");
+
+registerForm.onsubmit = function (event) {
+    // Prevent the form from refreshing the page,
+    // as it will do by default when the Submit event is triggered:
+    event.preventDefault();
+
+    // the input element in the form which has the ID of "username".
+    const registerData = {
+        username: registerForm.reg_username.value,
+        fullname: registerForm.reg_firstname.value + ' ' + registerForm.reg_lastname.value,
+        password: registerForm.reg_password.value,
+    }
+
+    console.log('Register Data', registerData);
+     register(registerData);
+     
+};
+
+
+
 document.addEventListener('DOMContentLoaded', function () {
-    const loginCard = document.querySelector(".form-card");
-    const registerButton = document.querySelector("#registerButton");
+    const formCard = document.querySelector('#form-card');
+    const loginForm = document.getElementById('loginFormContainer');
+    const registerForm = document.getElementById('registerFormContainer');
+
+    // Get buttons for the transition animation
+    const registerButton = document.getElementById('registerFormButton');
+    const loginButton = document.getElementById('loginFormButton');
+    
+    const transitionButtons = [registerButton, loginButton];
     const body = document.body;
 
     // Function to disable scrolling
@@ -40,40 +68,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Initially set the background color and card class for login
     body.classList.add('blue-background');
-    loginCard.classList.add('login-card');
+    formCard.classList.add('login-card');
 
-    registerButton.addEventListener('click', function () {
-        // Disable scrolling before animation starts
-        disableScroll();
+    transitionButtons.forEach(element => {
+        element.addEventListener('click', function () {
 
-        // Slide down the current card
-        loginCard.classList.add('slide-down');
+            // Disable scrolling before animation starts
+            disableScroll();
 
-        // Toggle body background color classes
-        body.classList.toggle('blue-background');
-        body.classList.toggle('red-background');
+            // Slide down the current card
+            formCard.classList.add('slide-down');
 
-        // After a delay, slide up the new registration card
-        new Promise(resolve => {
+            // Toggle body background color classes
+            body.classList.toggle('blue-background');
+            body.classList.toggle('red-background');
+
+            // After a delay, slide up the new registration card
             setTimeout(() => {
                 // Remove slide-down class and add slide-up class to bring in registration card
-                loginCard.classList.remove('slide-down');
-                loginCard.classList.add('slide-up');
+                formCard.classList.remove('slide-down');
+                formCard.classList.add('slide-up');
 
                 // Swap card background colors using class toggle
-                loginCard.classList.toggle('login-card');
-                loginCard.classList.toggle('registration-card');
+                formCard.classList.toggle('login-card');
+                formCard.classList.toggle('registration-card');
+
+                // Toggle visibility of login and register forms
+                loginForm.classList.toggle('hide-element');
+                registerForm.classList.toggle('hide-element');
 
                 // Enable scrolling after animation completes
-
-                // Reset button state and text (for demonstration)
-                registerButton.disabled = false;
-                registerButton.textContent = 'Register';
-
-
+                enableScroll();
             }, 500); // Adjust timing to match transition duration in CSS
-        }).then(() => {
-            enableScroll();
         });
     });
 });
