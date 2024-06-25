@@ -32,6 +32,7 @@ async function getPosts() {
 
 function renderPosts(posts) {
     const postsContainer = document.getElementById('posts-container');
+    postsContainer.innerHTML = ''; // Clear container before adding new posts
 
     posts.forEach(post => {
         const postElement = createPostElement(post);
@@ -41,15 +42,16 @@ function renderPosts(posts) {
 
 function createPostElement(post) {
     const postElement = document.createElement('div');
-    postElement.classList.add('post');
+    postElement.classList.add('card', 'mb-3', 'blue-background');
 
     // Create HTML structure for a post
     postElement.innerHTML = `
-        <div class="post-text">${post.text}</div>
-        <div class="post-info">
-            <div class="post-author">${post.username}</div>
-            <div class="post-date">${formatDate(post.createdAt)}</div>
-            <div class="post-likes">Likes: ${post.likes.length}</div>
+        <div class="card-body">
+            <p class="card-text">${post.text}</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted">${post.username} - ${formatDate(post.createdAt)}</small>
+                <span class="badge bg-primary">Likes: ${post.likes.length}</span>
+            </div>
         </div>
     `;
 
@@ -61,46 +63,40 @@ function formatDate(dateString) {
     return date.toLocaleString();
 }
 
-function createPost(postData) {
+async function createPost(postData) {
     const loginData = getLoginData();
-    console.log(`Post Text: ${postData}`);
-    
-    const myHeaders = new Headers();
-    myHeaders.append("accept", "application/json");
-    myHeaders.append("Authorization", `Bearer ${loginData.token}`);
-    myHeaders.append("Content-Type", "application/json");
-
-    const raw = JSON.stringify({
-        "text": `${postData.text}`
-    });
 
     const requestOptions = {
         method: "POST",
-        headers: myHeaders,
-        body: raw,
+        headers: {
+            "Authorization": `Bearer ${loginData.token}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ text: postData.text }),
         redirect: "follow"
     };
 
-    fetch(`${apiBaseURLP}/api/posts`, requestOptions)
-        .then((response) => response.text())
-        .then((result) => console.log(result))
-        .catch((error) => console.error(error));
+    try {
+        const response = await fetch(`${apiBaseURLP}/api/posts`, requestOptions);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const newPost = await response.json();
+        getPosts(); // Refresh the posts after a new post is created
+    } catch (error) {
+        console.error('Error creating post:', error);
+    }
 }
 
 const postForm = document.querySelector("#postForm");
 
 postForm.onsubmit = function (event) {
-    // Prevent the form from refreshing the page,
-    // as it will do by default when the Submit event is triggered:
     event.preventDefault();
 
-    // the input element in the form which has the ID of "username".
     const postData = {
-        text: postForm.posttextarea.value
+        text: postForm.posttextarea.value.trim()
+    };
+
+    if (postData.text) {
+        createPost(postData);
+        postForm.posttextarea.value = ''; // Clear the textarea after submitting
     }
-
-    console.log('Post Data', postData);
-     createPost(postData);
-     
 };
-

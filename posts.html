@@ -1,4 +1,3 @@
-<!-- POSTS page -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,10 +16,14 @@
     <!-- Global CSS (CSS rules you want applied to all pages) -->
     <link rel="stylesheet" href="style/global.css">
 
-    <!-- Page-specific CSS -->
-    <link rel="stylesheet" href="style/posts.css">
 
-    <title>/POSTS</title>
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Concert+One&display=swap" rel="stylesheet">
+
+
+    <title>Posts Page</title>
 
     <!-- Run BEFORE page is finished loading (before window.onload): -->
     <script src="scripts/auth.js"></script>
@@ -30,28 +33,88 @@
     </script>
 </head>
 
-<body>
+<body class="red-background">
 
     <header>
-        <h1>POSTS PAGE</h1>
+        <nav class="navbar navbar-expand-lg navbar-dark bar-colors">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">LUNCHBOX!</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <button class="btn btn-outline-light"
+                                onclick="redirWindow('/profile.html')">Profile</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="btn btn-outline-light" onclick="logout()">Log Out</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
     </header>
 
-    <main>
-
-        <form id="postForm">
-            <div>
-                <label for="posttextarea"></label>
-                <textarea name="postTextArea" id="posttextarea"></textarea>
+    <main class="container main-container">
+        <div class="row">
+            <!-- Profile Card Section -->
+            <div class="col-lg-3 order-1 order-lg-1 order-md-1 custom-column-center mb-3">
+                <div class="card blue-background">
+                    <img class="img-fluid" src="https://static.wikia.nocookie.net/parody/images/6/60/Captain_P.webp"
+                        alt="Profile Image">
+                    <div class="card-body">
+                        <h5 class="card-title">Username</h5>
+                        <p class="card-text">Status: Active</p>
+                        <p class="card-text">Location: Earth</p>
+                        <a href="#" class="btn btn-primary">Edit Profile</a>
+                    </div>
+                </div>
             </div>
-            <button onclick="createPost()">CREATE POST</button>
-        </form>
 
-        <div id="posts-container"></div> <!-- Container for posts -->
-        <button onclick="logout()">LOG OUT</button>
-        <button onclick="redirWindow('/profile.html')">PROFILE</button>
+            <!-- Main Content Section -->
+            <div class="col-lg-6 order-2 order-lg-2 order-md-3 custom-column-center mb-3">
+                <div class="card blue-background" id="create-post-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Create a Post</h5>
+                        <form id="postForm">
+                            <div class="mb-3">
+                                <label for="posttextarea" class="form-label">What's on your mind?</label>
+                                <textarea class="form-control form-element" id="posttextarea"
+                                    placeholder="Write your post here..." rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Create Post</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="posts-container" class="mt-4"></div> <!-- Container for posts -->
+            </div>
+
+            <!-- Friends and Groups Section -->
+            <div class="col-lg-3 order-3 order-lg-3 order-md-2 custom-column-center">
+                <div class="card blue-background">
+                    <div class="card-body">
+                        <h5 class="card-title">Friends & Groups</h5>
+                        <ul class="list-group">
+                            <li class="list-group-item">Friend 1</li>
+                            <li class="list-group-item">Friend 2</li>
+                            <li class="list-group-item">Group 1</li>
+                            <li class="list-group-item">Group 2</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
     </main>
 
-    <footer></footer>
+    <footer class="bar-colors text-white text-center py-3 mt-auto">
+        <p>&copy; 2024 LUNCHBOX!. All rights reserved.</p>
+    </footer>
 
     <!-- Page-specific code -->
     <script src="scripts/posts.js"></script>
