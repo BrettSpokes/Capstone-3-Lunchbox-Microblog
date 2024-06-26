@@ -195,13 +195,15 @@ async function saveBio() {
 
 // Adding the DOMContentLoaded event listener
 document.addEventListener("DOMContentLoaded", async () => {
-  const loginData = getLoginData();
-  if (loginData.username) {
-    const userInfo = await getUserInfo(loginData.username);
-    if (userInfo && userInfo.bio) {
-      document.querySelector('#bioContent').textContent = `Bio: ${userInfo.bio}`;
+  if (window.location.pathname === "/profile.html") {
+    const loginData = getLoginData();
+    if (loginData.username) {
+      const userInfo = await getUserInfo(loginData.username);
+      if (userInfo && userInfo.bio) {
+        document.querySelector('#bioContent').textContent = `Bio: ${userInfo.bio}`;
+      }
+      // Set the username in the card title
+      document.querySelector('.card-title').textContent = loginData.username;
     }
-    // Set the username in the card title
-    document.querySelector('.card-title').textContent = loginData.username;
   }
 });

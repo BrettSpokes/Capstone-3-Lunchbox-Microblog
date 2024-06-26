@@ -63,8 +63,8 @@
             <!-- Profile Card Section -->
             <div class="col-lg-3 order-1 order-lg-1 order-md-1 order-sm-1 custom-column-center mb-3">
                 <div class="card blue-background">
-                    <img class="img-fluid rounded-circle" src="https://static.wikia.nocookie.net/parody/images/6/60/Captain_P.webp"
-                        alt="Profile Image">
+                    <img class="img-fluid rounded-circle"
+                        src="https://static.wikia.nocookie.net/parody/images/6/60/Captain_P.webp" alt="Profile Image">
                     <div class="card-body">
                         <h5 class="card-title" id="profile-Username">Username</h5>
                         <p class="card-text">Status: Active</p>
@@ -89,6 +89,26 @@
                         </form>
                     </div>
                 </div>
+
+                <!-- Dropdown for sorting posts -->
+                <div class="card blue-background mt-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Sort Posts</h5>
+                        <select id="sortOptions" class="form-select">
+                            <option value="recent">By Recent</option>
+                            <option value="username">By Username</option>
+                            <option value="likes">By Likes</option>
+                        </select>
+                    </div>
+
+                    <!-- Pagination controls -->
+                    <div class="text-center mt-3">
+                        <button class="btn btn-primary" id="prevPageBtn">Previous</button>
+                        <span id="pageIndicator" class="ps-2"></span> <!-- Page number display -->
+                        <button class="btn btn-primary ms-2" id="nextPageBtn">Next </button>
+                    </div>
+                </div>
+
 
                 <div id="posts-container" class="mt-4"></div> <!-- Container for posts -->
             </div>
