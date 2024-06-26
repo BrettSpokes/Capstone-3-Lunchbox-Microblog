@@ -3,7 +3,7 @@
 const apiBaseURLP = "http://microbloglite.us-east-2.elasticbeanstalk.com";
 const loginData = getLoginData();
 let allPosts = []; // To store all fetched posts initially
-let currentPage = 0; // Current page for pagination
+let currentPage = 0; // Current page for pagination, starting from 0
 
 document.addEventListener('DOMContentLoaded', () => {
     getUser();
@@ -235,9 +235,16 @@ function createPostElement(post) {
     const postBody = document.createElement('div');
     postBody.className = 'card-body';
 
-    const postTitle = document.createElement('h5');
-    postTitle.className = 'card-title';
-    postTitle.innerText = post.username;
+    // Username as a clickable link
+    const usernameLink = document.createElement('a');
+    usernameLink.href = `/profile.html?username=${encodeURIComponent(post.username)}`; // Encode username for URL
+    usernameLink.className = 'card-title h2 text-decoration-none';
+    usernameLink.innerText = post.username;
+    usernameLink.style.cursor = 'pointer'; // Change cursor to pointer for better UX
+    usernameLink.addEventListener('click', (event) => {
+        event.preventDefault(); // Prevent default link behavior
+        window.location.href = usernameLink.href; // Navigate to profile.html with username parameter
+    });
 
     const postText = document.createElement('p');
     postText.className = 'card-text';
@@ -266,7 +273,7 @@ function createPostElement(post) {
         postFooter.appendChild(deleteButton);
     }
 
-    postBody.appendChild(postTitle);
+    postBody.appendChild(usernameLink); // Append username link instead of title
     postBody.appendChild(postText);
     postBody.appendChild(postTime);
     postBody.appendChild(postFooter);
@@ -275,12 +282,16 @@ function createPostElement(post) {
     return postElement;
 }
 
+
 function updatePaginationButtons() {
     const prevPageBtn = document.getElementById('prevPageBtn');
     const nextPageBtn = document.getElementById('nextPageBtn');
 
     prevPageBtn.disabled = currentPage === 0;
     nextPageBtn.disabled = currentPage >= Math.ceil(allPosts.length / 10) - 1;
+
+    // Display current page number
+    document.getElementById('pageIndicator').innerText = `Page ${currentPage + 1}`;
 }
 
 function getUser() {
@@ -291,3 +302,4 @@ function getUser() {
         usernameElement.innerText = '';
     }
 }
+

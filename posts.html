@@ -28,9 +28,6 @@
     <!-- Run BEFORE page is finished loading (before window.onload): -->
     <script src="scripts/auth.js"></script>
     <script src="scripts/navigation.js"></script>
-    <script>
-        if (isLoggedIn() === false) window.location.replace("/");
-    </script>
 </head>
 
 <body class="red-background">
@@ -38,7 +35,7 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bar-colors">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">LUNCHBOX!</a>
+                <a class="navbar-brand" href="/posts.html">LUNCHBOX!</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>

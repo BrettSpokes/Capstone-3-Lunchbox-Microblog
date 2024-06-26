@@ -46,7 +46,7 @@ async function login(loginData) {
         // Here is where you might want to add an error notification 
         // or other visible indicator to the page so that the user is  
         // informed that they have entered the wrong login info.
-
+        document.querySelector("#login").loginButton.disabled = false;
         return null
       }
       window.localStorage.setItem("login-data", JSON.stringify(loginData));
@@ -119,33 +119,34 @@ async function updateUser() {
   const loginData = getLoginData();
   const passwordEntry = document.getElementById('passwordVerification').value;
   const textField = document.getElementById('bioTextArea').value;
-  
+
   const myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
   myHeaders.append("Authorization", `Bearer ${loginData.token}`);
   myHeaders.append("Content-Type", "application/json");
 
   const raw = JSON.stringify({
-      "password": passwordEntry,
-      "bio": textField
+    "bio": textField
   });
 
   const requestOptions = {
-      method: "PUT",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow"
+    method: "PUT",
+    headers: myHeaders,
+    body: raw,
+    redirect: "follow"
   };
 
-  try {
+  if (passwordEntry) {
+    try {
       const response = await fetch(`${apiBaseURL}/api/users/${loginData.username}`, requestOptions);
       if (!response.ok) {
-          throw new Error('Failed to update user information');
+        throw new Error('Failed to update user information');
       }
       console.log("User information updated successfully");
-  } catch (error) {
+    } catch (error) {
       console.error('Error updating user information:', error);
-  }
+    }
+  } else {alert('Please input your password');}
 }
 
 function register(registerData) {

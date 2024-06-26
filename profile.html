@@ -28,9 +28,6 @@
     <!-- Run BEFORE page is finished loading (before window.onload): -->
     <script src="scripts/auth.js"></script>
     <script src="scripts/navigation.js"></script>
-    <script>
-        if (isLoggedIn() === false) window.location.replace("/");
-    </script>
 </head>
 
 <body class="blue-background">
@@ -38,7 +35,7 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bar-colors">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">LUNCHBOX!</a>
+                <a class="navbar-brand" href="/posts.html">LUNCHBOX!</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -58,7 +55,8 @@
     </header>
 
     <main class="container main-container">
-        <div class="row justify-content-center">
+        <!-- Local User Profile Card -->
+        <div class="row justify-content-center" id="profile-page-card">
             <div class="col-12">
                 <div class="card profile-page-card red-background">
                     <div class="card-body">
@@ -75,7 +73,7 @@
 
                             <!-- Center Section (Bio) -->
                             <div class="col-6 mb-3">
-                                <h5 class="card-title"></h5>
+                                <h5 id="profile-Username" class="card-title"></h5>
                                 <p class="card-text">Status: Active</p>
                                 <p class="card-text">Location: Earth</p>
                                 <div id="bioDisplay">
@@ -84,7 +82,7 @@
                                 <div id="bioEdit" style="display: none;">
                                     <textarea id="bioTextArea" class="form-control mb-2" rows="3"></textarea>
                                     <input type="password" id="passwordVerification" class="form-control mb-2"
-                                        placeholder="Verify Password">
+                                        placeholder="Verify Password" required>
                                     <button class="btn btn-primary" onclick="saveBio()">Save</button>
                                 </div>
                                 <button class="btn btn-primary d-block mt-3 mx-auto" onclick="editBio()">Edit Bio</button>
@@ -95,6 +93,44 @@
                                 <div class="mb-3">
                                     <button class="btn btn-success w-100 mb-2">Set Status</button>
                                     <button class="btn btn-secondary w-100">Appear Offline</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Remote User Profile Card -->
+        <div class="row justify-content-center hide-element" id="external-profile-card">
+            <div class="col-12">
+                <div class="card profile-page-card red-background">
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Left Section (Image and Profile Details) -->
+                            <div class="col-md-3 mb-3 d-flex">
+                                <div>
+                                    <img src="https://static.wikia.nocookie.net/parody/images/6/60/Captain_P.webp"
+                                        alt="Profile Picture" class="img-fluid rounded-circle">
+
+                                </div>
+                            </div>
+
+                            <!-- Center Section (Bio) -->
+                            <div class="col-6 mb-3">
+                                <h5 id="profile-Username" class="card-title"></h5>
+                                <p class="card-text">Status: Active</p>
+                                <p class="card-text">Location: Earth</p>
+                                <div id="bioDisplay">
+                                    <p id="bioContent" class="card-text"></p>
+                                </div>
+                            </div>
+
+                            <!-- Right Section (Additional Buttons) -->
+                            <div class="col-3">
+                                <div class="mb-3">
+                                    <button class="btn btn-success w-100 mb-2">Friend User</button>
+                                    <button class="btn btn-secondary w-100">Send Message</button>
                                 </div>
                             </div>
                         </div>
