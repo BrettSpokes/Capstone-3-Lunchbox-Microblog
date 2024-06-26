@@ -3,13 +3,20 @@
 "use strict";
 
 const apiBaseURLP = "http://microbloglite.us-east-2.elasticbeanstalk.com";
+const loginData = getLoginData();
 
 document.addEventListener('DOMContentLoaded', () => {
+    getUser();
     getPosts();
 });
 
+function getUser() {
+
+    console.log('setting username');
+    document.getElementById('profile-Username').innerText = loginData.username;
+}
+
 async function getPosts() {
-    const loginData = getLoginData();
 
     const requestOptions = {
         method: "GET",
@@ -29,6 +36,117 @@ async function getPosts() {
         console.error('Error fetching posts:', error);
     }
 }
+
+async function likePost(_postId) {
+    console.log('liking post', _postId);
+    const myHeaders = new Headers();
+    myHeaders.append("accept", "application/json");
+    myHeaders.append("Authorization", `Bearer ${loginData.token}`);
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+        "postId": `${_postId}`
+    });
+
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
+    };
+
+    try {
+        const response = await fetch(`${apiBaseURLP}/api/likes`, requestOptions);
+        if (response.status === 201) {
+            getPosts();
+        }
+        else if (response.status === 400) {
+            console.log('Duplicate Error');
+            await handleDeleteLike(_postId);
+        } else {
+            throw new Error('Error liking post');
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function handleDeleteLike(_postId) {
+    console.log('Post that has a like', _postId);
+    const specificPost = await getSpecificPost(_postId);
+
+    // Find the like associated with the current user
+    const userLike = specificPost.likes.find(like => like.username === loginData.username);
+
+    if (userLike) {
+        console.log('User CaptainPlanet liked this post: like._id', userLike._id);
+        deleteLike(userLike._id);
+    } else {
+        console.log('User CaptainPlanet did not like this post.');
+    }
+}
+
+async function deleteLike(_likeId) {
+    const myHeaders = new Headers();
+    myHeaders.append("accept", "application/json");
+    myHeaders.append("Authorization", `Bearer ${loginData.token}`);
+
+    const requestOptions = {
+        method: "DELETE",
+        headers: myHeaders,
+        redirect: "follow"
+    };
+
+    fetch(`${apiBaseURLP}/api/likes/${_likeId}`, requestOptions)
+        .then((response) => response.text())
+        .then((result) => {
+            console.log(result);
+            getPosts();
+        })
+        .catch((error) => console.error(error));
+}
+
+async function getSpecificPost(_postId) {
+    const myHeaders = new Headers();
+    myHeaders.append("accept", "application/json");
+    myHeaders.append("Authorization", `Bearer ${loginData.token}`);
+
+    const requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow"
+    };
+
+    try {
+        const response = await fetch(`${apiBaseURLP}/api/posts/${_postId}`, requestOptions);
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error(error);
+        return null; // Handle the error case appropriately
+    }
+}
+
+async function deletePost(_postId) {
+    const myHeaders = new Headers();
+    myHeaders.append("accept", "application/json");
+    myHeaders.append("Authorization", `Bearer ${loginData.token}`);
+
+    const requestOptions = {
+        method: "DELETE",
+        headers: myHeaders,
+        redirect: "follow"
+    };
+
+    fetch(`${apiBaseURLP}/api/posts/${_postId}`, requestOptions)
+        .then((response) => response.text())
+        .then((result) => {
+            console.log(result);
+            getPosts();
+        })
+        .catch((error) => console.error(error));
+}
+
 
 function renderPosts(posts) {
     const postsContainer = document.getElementById('posts-container');
@@ -50,7 +168,11 @@ function createPostElement(post) {
             <p class="card-text">${post.text}</p>
             <div class="d-flex justify-content-between align-items-center">
                 <small class="text-muted">${post.username} - ${formatDate(post.createdAt)}</small>
-                <span class="badge bg-primary">Likes: ${post.likes.length}</span>
+                <button class="badge bg-primary" onclick="likePost('${post._id}')">Likes: ${post.likes.length}</button>
+                ${post.username === loginData.username
+            ? `<button class="badge bg-danger" onclick="deletePost('${post._id}')">Delete</button>`
+            : ''
+        }
             </div>
         </div>
     `;
@@ -64,7 +186,6 @@ function formatDate(dateString) {
 }
 
 async function createPost(postData) {
-    const loginData = getLoginData();
 
     const requestOptions = {
         method: "POST",

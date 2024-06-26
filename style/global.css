@@ -102,11 +102,11 @@ header h1 {
 }
 
 .red-background {
-    background-color: #ff4d4d !important; /* Override for body background */
+    background-color: #ff4d4d; /* Override for body background */
 }
 
 .blue-background {
-    background-color: #5ac9f6 !important; /* Override for body background */
+    background-color: #5ac9f6; /* Override for body background */
 }
 
 .gradient-transition {
@@ -216,6 +216,25 @@ header h1 {
     border-color: #00162d;
 }
 
+/* Profile.css */
+
+.profile-page-card {
+    border-radius: 50px;
+    padding: 20px;
+    border: 8px solid #002043;
+    transition: background-color 0.5s ease-in-out;
+    min-width: 600px; /* Adjust width as needed */
+    max-width: 1200px; /* Adjust width as needed */
+}
+
+.profile-page-card .card-body {
+    padding: 0; /* Reset padding to override Bootstrap */
+}
+
+.profile-page-card .row {
+    margin: 0; /* Reset margin to override Bootstrap */
+}
+
 /* Adjustments for Main Content Layout */
 .container-fluid {
     padding-left: 15px;
@@ -233,4 +252,10 @@ header h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+/* Add this class for the background image */
+.background-pattern {
+    background-image: url(imgs/Seamless-Pattern-Food.webp);
+    background-repeat: repeat;
 }
