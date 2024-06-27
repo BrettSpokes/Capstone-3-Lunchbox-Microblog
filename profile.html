@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Gravatar CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
@@ -56,16 +59,16 @@
 
     <main class="container main-container">
         <!-- Local User Profile Card -->
-        <div class="row justify-content-center" id="profile-page-card">
-            <div class="col-12">
+        <div class="row justify-content-center">
+            <div class="col-12 hide-element" id="profile-page-card">
                 <div class="card profile-page-card red-background">
                     <div class="card-body">
                         <div class="row">
                             <!-- Left Section (Image and Profile Details) -->
                             <div class="col-md-3 mb-3 d-flex">
                                 <div>
-                                    <img src="https://static.wikia.nocookie.net/parody/images/6/60/Captain_P.webp"
-                                        alt="Profile Picture" class="img-fluid rounded-circle">
+                                    <img src="https://www.gravatar.com/avatar/${hashedEmail}?d=mp"
+                                        alt="Profile Picture" class="img-fluid rounded-circle" id="active-user-icon">
 
                                     <button class="btn btn-primary mt-3 d-block mx-auto">Change Image</button>
                                 </div>
@@ -85,7 +88,8 @@
                                         placeholder="Verify Password" required>
                                     <button class="btn btn-primary" onclick="saveBio()">Save</button>
                                 </div>
-                                <button class="btn btn-primary d-block mt-3 mx-auto" onclick="editBio()">Edit Bio</button>
+                                <button class="btn btn-primary d-block mt-3 mx-auto" onclick="editBio()">Edit
+                                    Bio</button>
                             </div>
 
                             <!-- Right Section (Additional Buttons) -->
@@ -99,30 +103,28 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Remote User Profile Card -->
-        <div class="row justify-content-center hide-element" id="external-profile-card">
-            <div class="col-12">
+            <!-- Remote User Profile Card -->
+            <div class="col-12 hide-element" id="external-profile-card">
                 <div class="card profile-page-card red-background">
                     <div class="card-body">
                         <div class="row">
                             <!-- Left Section (Image and Profile Details) -->
                             <div class="col-md-3 mb-3 d-flex">
                                 <div>
-                                    <img src="https://static.wikia.nocookie.net/parody/images/6/60/Captain_P.webp"
-                                        alt="Profile Picture" class="img-fluid rounded-circle">
+                                    <img src="https://www.gravatar.com/avatar/${hashedEmail}?d=mp"
+                                        alt="Profile Picture" class="img-fluid rounded-circle" id="external-user-icon">
 
                                 </div>
                             </div>
 
                             <!-- Center Section (Bio) -->
                             <div class="col-6 mb-3">
-                                <h5 id="profile-Username" class="card-title"></h5>
+                                <h5 id="ex-profile-Username" class="card-title"></h5>
                                 <p class="card-text">Status: Active</p>
                                 <p class="card-text">Location: Earth</p>
-                                <div id="bioDisplay">
-                                    <p id="bioContent" class="card-text"></p>
+                                <div id="ex-bioDisplay">
+                                    <p id="ex-bioContent" class="card-text"></p>
                                 </div>
                             </div>
 
@@ -137,7 +139,62 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Friends and Groups Section -->
+            <div class="col-lg-3 order-3 order-lg-3 order-md-2 order-sm-2 custom-column-center my-3">
+                <div id="friends-list-container" class="hide-element">
+                    <div class="card blue-background">
+                        <div class="card-body">
+                            <h5 class="card-title">Friends</h5>
+                            <ul class="list-group" id="friends-list">
+                                <!-- Friends will be added here dynamically -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 order-2 order-lg-2 order-md-3 order-sm-3 custom-column-center my-3">
+                <div id="create-post-container" class="hide-element">
+                    <div class="card blue-background" id="create-post-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Create a Post</h5>
+                            <form id="postForm">
+                                <div class="mb-3">
+                                    <label for="posttextarea" class="form-label">What's on your mind?</label>
+                                    <textarea class="form-control form-element" id="posttextarea"
+                                        placeholder="Write your post here..." rows="3"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Create Post</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dropdown for sorting posts -->
+                <div class="card blue-background mt-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Sort Posts</h5>
+                        <select id="sortOptions" class="form-select">
+                            <option value="recent">By Recent</option>
+                            <option value="likes">By Likes</option>
+                        </select>
+                    </div>
+
+                    <!-- Pagination controls -->
+                    <div class="text-center mt-3">
+                        <button class="btn btn-primary" id="prevPageBtn">Previous</button>
+                        <span id="pageIndicator" class="ps-2"></span> <!-- Page number display -->
+                        <button class="btn btn-primary ms-2" id="nextPageBtn">Next </button>
+                    </div>
+                </div>
+
+
+                <div id="posts-container" class="mt-4"></div> <!-- Container for posts -->
+            </div>
+
         </div>
+
+
     </main>
 
     <footer class="bar-colors text-white text-center py-3 mt-auto sticky-footer">

@@ -2,27 +2,53 @@
 
 const apiBaseURLP = "http://microbloglite.us-east-2.elasticbeanstalk.com";
 const loginData = getLoginData();
+const urlUsername = getUrlParameter('username');
+
 let allPosts = []; // To store all fetched posts initially
 let currentPage = 0; // Current page for pagination, starting from 0
 
 document.addEventListener('DOMContentLoaded', () => {
     getUser();
-    fetchAllPosts(); // Initial fetch of all posts for sorting
 
-    document.getElementById('sortOptions').addEventListener('change', sortAndRenderPosts);
-    document.getElementById('postForm').addEventListener('submit', createPost);
+    renderFriendsList();
 
-    document.getElementById('prevPageBtn').addEventListener('click', () => {
-        if (currentPage > 0) {
-            currentPage--;
+    if (window.location.pathname.includes('/posts.html')) {
+        fetchAllPosts(); // Initial fetch of all posts for sorting
+
+        document.getElementById('sortOptions').addEventListener('change', sortAndRenderPosts);
+        document.getElementById('postForm').addEventListener('submit', createPost);
+
+        document.getElementById('prevPageBtn').addEventListener('click', () => {
+            if (currentPage > 0) {
+                currentPage--;
+                renderPosts();
+            }
+        });
+
+        document.getElementById('nextPageBtn').addEventListener('click', () => {
+            currentPage++;
             renderPosts();
-        }
-    });
+        });
+    } else if (window.location.pathname.includes('/profile.html')) {
+        fetchAllPosts(); // Initial fetch of all posts for sorting
 
-    document.getElementById('nextPageBtn').addEventListener('click', () => {
-        currentPage++;
-        renderPosts();
-    });
+        document.getElementById('sortOptions').addEventListener('change', sortAndRenderPosts);
+        document.getElementById('postForm').addEventListener('submit', createPost);
+
+        document.getElementById('prevPageBtn').addEventListener('click', () => {
+            if (currentPage > 0) {
+                currentPage--;
+                renderPosts();
+            }
+        });
+
+        document.getElementById('nextPageBtn').addEventListener('click', () => {
+            currentPage++;
+            renderPosts();
+        });
+    }
+
+
 });
 
 async function fetchAllPosts() {
@@ -40,9 +66,29 @@ async function fetchAllPosts() {
             throw new Error('Error fetching posts');
         }
         allPosts = await response.json(); // Store all posts locally
+
+        filterUserPosts();
         sortAndRenderPosts(); // Sort and render posts after fetching
     } catch (error) {
         console.error('Error fetching posts:', error);
+    }
+}
+
+function filterUserPosts() {
+    if (window.location.pathname.includes('/profile.html')) {
+        let filteredPosts;
+        console.log('UrlUsername',urlUsername);
+
+        if (!(urlUsername) || urlUsername == loginData.username) {
+             filteredPosts = allPosts.filter(post => post.username === loginData.username);   
+
+        } else if (urlUsername != loginData.username) {
+             filteredPosts = allPosts.filter(post => post.username === urlUsername);
+
+        }
+
+        
+        allPosts = filteredPosts;
     }
 }
 
@@ -221,6 +267,7 @@ function renderPosts() {
     postsContainer.innerHTML = '';
 
     paginatedPosts.forEach(post => {
+        console.log(post);
         const postElement = createPostElement(post);
         postsContainer.appendChild(postElement);
     });
@@ -235,10 +282,20 @@ function createPostElement(post) {
     const postBody = document.createElement('div');
     postBody.className = 'card-body';
 
+    // Generate Gravatar URL
+    const gravatarUrl = generateGravIcon(post.username);
+
+    // Create img element
+    const avatarImg = document.createElement('img');
+    avatarImg.src = gravatarUrl;
+    avatarImg.alt = `${post.username}'s avatar`;
+    avatarImg.className = 'avatar-img me-3'; // Add margin-right for spacing
+    avatarImg.style.height = '3em'; // Adjust height to match h2 element
+
     // Username as a clickable link
     const usernameLink = document.createElement('a');
     usernameLink.href = `/profile.html?username=${encodeURIComponent(post.username)}`; // Encode username for URL
-    usernameLink.className = 'card-title h2 text-decoration-none';
+    usernameLink.className = 'card-title h2 text-decoration-none d-inline'; // Make inline to align with img
     usernameLink.innerText = post.username;
     usernameLink.style.cursor = 'pointer'; // Change cursor to pointer for better UX
     usernameLink.addEventListener('click', (event) => {
@@ -273,7 +330,14 @@ function createPostElement(post) {
         postFooter.appendChild(deleteButton);
     }
 
-    postBody.appendChild(usernameLink); // Append username link instead of title
+    // Create a div to hold avatar and username link
+    const headerDiv = document.createElement('div');
+    headerDiv.className = 'd-flex align-items-center mb-2'; // Flexbox container for alignment
+
+    headerDiv.appendChild(avatarImg);
+    headerDiv.appendChild(usernameLink);
+
+    postBody.appendChild(headerDiv); // Append header div
     postBody.appendChild(postText);
     postBody.appendChild(postTime);
     postBody.appendChild(postFooter);
@@ -302,4 +366,35 @@ function getUser() {
         usernameElement.innerText = '';
     }
 }
+
+async function renderFriendsList() {
+    try {
+        const randomFriends = await populateFriendsList();
+        if (randomFriends) {
+            const friendsList = document.getElementById("friends-list");
+            friendsList.innerHTML = ""; // Clear any existing list items
+
+            randomFriends.forEach((friendName) => {
+                const listItem = document.createElement("li");
+                listItem.classList.add("list-group-item");
+
+                // Create a clickable link for the username
+                const usernameLink = document.createElement("a");
+                usernameLink.href = `/profile.html?username=${encodeURIComponent(friendName.username)}`;
+                usernameLink.className = "card-title h5 text-decoration-none";
+                usernameLink.innerText = friendName.username;
+                usernameLink.style.cursor = "pointer";
+
+                // Add the link to the list item
+                listItem.appendChild(usernameLink);
+                friendsList.appendChild(listItem);
+            });
+        } else {
+            console.log("Failed to fetch users.");
+        }
+    } catch (error) {
+        console.error("Error fetching users:", error);
+    }
+}
+
 

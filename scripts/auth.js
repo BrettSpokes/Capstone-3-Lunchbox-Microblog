@@ -146,7 +146,7 @@ async function updateUser() {
     } catch (error) {
       console.error('Error updating user information:', error);
     }
-  } else {alert('Please input your password');}
+  } else { alert('Please input your password'); }
 }
 
 function register(registerData) {
@@ -167,7 +167,7 @@ function register(registerData) {
     redirect: "follow"
   };
 
-  fetch("http://microbloglite.us-east-2.elasticbeanstalk.com/api/users", requestOptions)
+  fetch(`${apiBaseURL}/api/users`, requestOptions)
     .then((response) => response.text())
     .then((result) => {
       console.log(result);
@@ -194,17 +194,102 @@ async function saveBio() {
   document.getElementById('bioEdit').style.display = 'none';
 }
 
-// Adding the DOMContentLoaded event listener
+async function fetchUsersList() {
+  const myHeaders = new Headers();
+  myHeaders.append("accept", "application/json");
+  myHeaders.append("Authorization", `Bearer ${loginData.token}`); // Fix the Authorization header
+
+  // Generate a random offset between 0 and 300
+  const randomOffset = Math.floor(Math.random() * 301); // 0 to 300 (inclusive)
+
+  const requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow"
+  };
+
+  try {
+    const response = await fetch(`${apiBaseURL}/api/users?offset=${randomOffset}`, requestOptions);
+    const userList = await response.json(); // Parse the response as JSON
+    return userList; // Return the list of users
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return null; // Handle the error gracefully
+  }
+}
+
+function getRandomUsers(userList, count) {
+  if (!userList || userList.length === 0) {
+    return []; // Return an empty array if userList is null or empty
+  }
+
+  const shuffledUsers = userList.slice(); // Create a copy of the original array
+  for (let i = shuffledUsers.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledUsers[i], shuffledUsers[j]] = [shuffledUsers[j], shuffledUsers[i]]; // Swap elements randomly
+  }
+
+  return shuffledUsers.slice(0, count); // Return the first 'count' users
+}
+
+async function populateFriendsList() {
+  try {
+    const userList = await fetchUsersList();
+    if (userList) {
+      const randomUsers = getRandomUsers(userList, 4);
+      return randomUsers; // Return the randomly selected users
+    } else {
+      console.log("Failed to fetch users.");
+      return null; // Return null or handle the error appropriately
+    }
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return null; // Return null in case of an error
+  }
+}
+
+function getUrlParameter(name) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(name);
+}
+
+function generateGravIcon(_username) {
+  let hashedEmail = CryptoJS.SHA256(`${_username}@gmail.com`);
+  // Step 2: Construct the Gravatar URL.
+  let gravatarUrl = `https://www.gravatar.com/avatar/${hashedEmail}?d=wavatar`;
+  console.log(`gravatarUrl ${gravatarUrl}`);
+  // Step 3: Set the image source to the Gravatar URL.
+  return gravatarUrl;
+
+}
+
+
 document.addEventListener("DOMContentLoaded", async () => {
   if (window.location.pathname === "/profile.html") {
     const loginData = getLoginData();
+    const urlUsername = getUrlParameter('username');
+    
     if (loginData.username) {
       const userInfo = await getUserInfo(loginData.username);
       if (userInfo && userInfo.bio) {
         document.querySelector('#bioContent').textContent = `Bio: ${userInfo.bio}`;
       }
-      // Set the username in the card title
       document.querySelector('.card-title').textContent = loginData.username;
     }
+
+    if (!(urlUsername) || urlUsername == loginData.username) {
+      let gavUrl = generateGravIcon(loginData.username);
+      document.getElementById('active-user-icon').src = gavUrl;
+    } else if (urlUsername != loginData.username) {
+      let gavUrl = generateGravIcon(urlUsername);
+      document.getElementById('external-user-icon').src = gavUrl;
+    }
+
   }
+
+  if (window.location.pathname === "/posts.html") {
+    let gavUrl = generateGravIcon(loginData.username);
+      document.getElementById('active-user-icon').src = gavUrl;
+  }
+
 });
