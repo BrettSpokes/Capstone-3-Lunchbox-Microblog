@@ -132,10 +132,10 @@ header h1 {
 }
 
 .form-card {
-    display: flex; /* Ensure contents are flexbox */
-    flex-direction: column; /* Stack items vertically */
-    justify-content: center; /* Center vertically */
-    align-items: center; /* Center horizontally */ 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
     transition: transform 0.5s ease-in-out;
 }
 
@@ -226,16 +226,16 @@ header h1 {
     padding: 20px;
     border: 8px solid #002043;
     transition: background-color 0.5s ease-in-out;
-    min-width: 600px; /* Adjust width as needed */
-    max-width: 1200px; /* Adjust width as needed */
+    min-width: 600px;
+    max-width: 1200px;
 }
 
 .profile-page-card .card-body {
-    padding: 0; /* Reset padding to override Bootstrap */
+    padding: 0; 
 }
 
 .profile-page-card .row {
-    margin: 0; /* Reset margin to override Bootstrap */
+    margin: 0; 
 }
 
 /* Adjustments for Main Content Layout */
@@ -250,15 +250,12 @@ header h1 {
     flex-grow: 1;
 }
 
-/* Ensure all columns are centered within the container */
-/* Custom classes for centering columns */
 .custom-column-center {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* Add this class for the background image */
 .background-pattern {
     background-image: url(imgs/Seamless-Pattern-Food.webp);
     background-repeat: repeat;
@@ -268,4 +265,50 @@ header h1 {
     position: sticky;
     bottom: 0;
     width: 100%;
+}
+
+/* Keyframe animation for the jiggle effect */
+@keyframes jiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+    75% { transform: rotate(-5deg); }
+  }
+  
+  /* Apply the jiggle animation on hover */
+  .icon-img:hover {
+    animation: jiggle 0.3s ease-in-out;
+  }
+  
+  .fade-in {
+    animation: fadeIn 1s ease-in-out forwards;
+    opacity: 0;
+}
+
+.animate-logo-top {
+    animation: moveTop 1s ease-in-out forwards;
+}
+
+.animate-logo-bottom {
+    animation: moveBottom 1s ease-in-out forwards;
+}
+
+.fade-in {
+    animation: fadeIn 1s ease-in-out forwards;
+    opacity: 0;
+}
+
+@keyframes moveTop {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-10%); }
+}
+
+@keyframes moveBottom {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(15%); }
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
 }

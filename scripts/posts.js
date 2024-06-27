@@ -289,14 +289,17 @@ function createPostElement(post) {
     const avatarImg = document.createElement('img');
     avatarImg.src = gravatarUrl;
     avatarImg.alt = `${post.username}'s avatar`;
-    avatarImg.className = 'avatar-img me-3'; // Add margin-right for spacing
+    avatarImg.className = 'avatar-img me-3 img-fluid rounded-circle'; // Add margin-right for spacing
     avatarImg.style.height = '3em'; // Adjust height to match h2 element
 
     // Username as a clickable link
     const usernameLink = document.createElement('a');
     usernameLink.href = `/profile.html?username=${encodeURIComponent(post.username)}`; // Encode username for URL
     usernameLink.className = 'card-title h2 text-decoration-none d-inline'; // Make inline to align with img
-    usernameLink.innerText = post.username;
+    
+    const displayUsername = post.username.length > 12 ? post.username.slice(0, 12) + '...' : post.username;
+usernameLink.innerText = displayUsername;
+
     usernameLink.style.cursor = 'pointer'; // Change cursor to pointer for better UX
     usernameLink.addEventListener('click', (event) => {
         event.preventDefault(); // Prevent default link behavior

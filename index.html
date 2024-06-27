@@ -29,11 +29,22 @@
 
 <body>
 
-    <header class="text-center my-4 concert-one-regular">
+    <header class="text-center my-4">
         <h1>Welcome to Lunchbox!</h1>
 
         <div class="image-area mt-5">
-            <img src="imgs/LogoTransparent.png" alt="Display Image" class="img-fluid custom-img">
+            <div class="row">
+                <div class="col-12"> <!-- Adjust column sizes as needed for responsiveness -->
+                    <img id="mainLogo" src="imgs/LogoTransparent.png" alt="Display Image" class="img-fluid custom-img icon-img">
+                </div>
+                <div class="col-12"> <!-- Adjust column sizes as needed for responsiveness -->
+                    <div class="position-relative">
+                        <img id="logoTop" src="imgs/LogoTransparent-Top.png" alt="Logo Top" class="img-fluid custom-img d-none">
+                        <p id="siteDescription" class="mt-3 text-white h2 text-center d-none px-5">Here every visit promises a burst of fun and joy! Discover what your friends are up to, explore their profiles, and stay updated with their latest posts. Our lighthearted platform is designed to nourish your soul with both social interaction and stimulating conversations. Connect with like-minded individuals to embark on adventures together, expanding your horizons and exploring new flavors. Let Lunchbox be your guide to new experiences and delightful connections!</p>
+                        <img id="logoBottom" src="imgs/LogoTransparent-Bottom.png" alt="Logo Bottom" class="img-fluid custom-img d-none">
+                    </div>
+                </div>
+            </div>
         </div>
     </header>
 
