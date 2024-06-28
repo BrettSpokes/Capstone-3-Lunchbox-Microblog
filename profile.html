@@ -35,28 +35,30 @@
 
 <body class="blue-background">
 
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bar-colors">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/posts.html">LUNCHBOX!</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item pe-3 py-2">
-                            <button class="btn btn-outline-light"
-                                onclick="redirWindow('/profile.html')">Profile</button>
-                        </li>
-                        <li class="nav-item py-2">
-                            <button class="btn btn-outline-light" onclick="logout()">Log Out</button>
-                        </li>
-                    </ul>
-                </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bar-colors">
+        <div class="container-fluid">
+            <a href="posts-2.html" class="logo">
+                <img src="imgs/LogoTransparent.png" alt="Lunchbox Logo" class="logo">
+            </a>
+            <a class="navbar-brand" href="/posts.html">LUNCHBOX!</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item pe-3 py-2">
+                        <button class="btn btn-outline-light"
+                            onclick="redirWindow('/posts.html')">Posts</button>
+                    </li>
+                    <li class="nav-item py-2">
+                        <button class="btn btn-outline-light" onclick="logout()">Log Out</button>
+                    </li>
+                </ul>
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
+</header>
 
     <main class="container main-container">
         <!-- Local User Profile Card -->
@@ -200,7 +202,7 @@
 
     </main>
 
-    <footer class="bar-colors text-white text-center py-3 mt-auto sticky-footer">
+    <footer class="bar-colors text-white text-center py-3 mt-auto">
         <p>&copy; 2024 LUNCHBOX!. All rights reserved.</p>
     </footer>
 
