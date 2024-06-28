@@ -27,6 +27,7 @@ Parks - A page that changes depending on what user you are viewing. If you are v
 
 # Interesting Script
 
+<p>
 async function fetchAllPosts() {
     const requestOptions = {
         method: "GET",
@@ -85,5 +86,6 @@ function sortAndRenderPosts() {
     currentPage = 0; // Reset to first page after sorting
     renderPosts();
 }
+</p>
 
 The reason I chose this as my interesting code is because it processes the data inorder to get a subset depending on the user, if it's a local or external user, and then additionally apply the sort ontop of it before displaying them on their respective pages.
