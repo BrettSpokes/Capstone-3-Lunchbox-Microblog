@@ -45,10 +45,11 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <button class="btn btn-outline-light" onclick="redirWindow('/posts.html')">Posts</button>
+                        <li class="nav-item pe-3 py-2">
+                            <button class="btn btn-outline-light"
+                                onclick="redirWindow('/profile.html')">Profile</button>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item py-2">
                             <button class="btn btn-outline-light" onclick="logout()">Log Out</button>
                         </li>
                     </ul>
@@ -66,11 +67,13 @@
                         <div class="row">
                             <!-- Left Section (Image and Profile Details) -->
                             <div class="col-md-3 mb-3 d-flex">
-                                <div>
-                                    <img src="https://www.gravatar.com/avatar/${hashedEmail}?d=mp"
-                                        alt="Profile Picture" class="img-fluid rounded-circle mx-5" id="active-user-icon">
-
-                                    <button class="btn btn-primary mt-3 d-block mx-auto">Change Image</button>
+                                <div class="d-flex align-items-center">
+                                    <div name="profile-detail-container">
+                                        <img src="https://www.gravatar.com/avatar/${hashedEmail}?d=mp"
+                                            alt="Profile Picture" class="img-fluid rounded-circle mx-5"
+                                            id="active-user-icon">
+                                        <button class="btn yellow-button mt-3 d-block mx-auto">Change Image</button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -86,17 +89,17 @@
                                     <textarea id="bioTextArea" class="form-control mb-2" rows="3"></textarea>
                                     <input type="password" id="passwordVerification" class="form-control mb-2"
                                         placeholder="Verify Password" required>
-                                    <button class="btn btn-primary" onclick="saveBio()">Save</button>
+                                    <button class="btn yellow-button" onclick="saveBio()">Save</button>
                                 </div>
-                                <button class="btn btn-primary d-block mt-3 mx-auto" onclick="editBio()">Edit
+                                <button class="btn yellow-button d-block mt-3 mx-auto" onclick="editBio()">Edit
                                     Bio</button>
                             </div>
 
                             <!-- Right Section (Additional Buttons) -->
-                            <div class="col-3">
+                            <div class="col-3 d-flex align-items-center">
                                 <div class="mb-3">
-                                    <button class="btn btn-success w-100 mb-2">Set Status</button>
-                                    <button class="btn btn-secondary w-100">Appear Offline</button>
+                                    <button class="btn yellow-button w-100 mb-2">Set Status</button>
+                                    <button class="btn yellow-button w-100">Appear Offline</button>
                                 </div>
                             </div>
                         </div>
@@ -111,9 +114,9 @@
                         <div class="row">
                             <!-- Left Section (Image and Profile Details) -->
                             <div class="col-md-3 mb-3 d-flex">
-                                <div>
-                                    <img src="https://www.gravatar.com/avatar/${hashedEmail}?d=mp"
-                                        alt="Profile Picture" class="img-fluid rounded-circle mx-5" id="external-user-icon">
+                                <div class="d-flex align-items-center">
+                                    <img src="https://www.gravatar.com/avatar/${hashedEmail}?d=mp" alt="Profile Picture"
+                                        class="img-fluid rounded-circle mx-5" id="external-user-icon">
 
                                 </div>
                             </div>
@@ -129,10 +132,10 @@
                             </div>
 
                             <!-- Right Section (Additional Buttons) -->
-                            <div class="col-3">
+                            <div class="col-3 d-flex align-items-center">
                                 <div class="mb-3">
-                                    <button class="btn btn-success w-100 mb-2">Friend User</button>
-                                    <button class="btn btn-secondary w-100">Send Message</button>
+                                    <button class="btn yellow-button w-100 mb-2">Friend User</button>
+                                    <button class="btn yellow-button w-100">Send Message</button>
                                 </div>
                             </div>
                         </div>
@@ -165,7 +168,7 @@
                                     <textarea class="form-control form-element" id="posttextarea"
                                         placeholder="Write your post here..." rows="3"></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Create Post</button>
+                                <button type="submit" class="btn white-button">Create Post</button>
                             </form>
                         </div>
                     </div>
@@ -182,9 +185,9 @@
 
                     <!-- Pagination controls -->
                     <div class="text-center mt-3">
-                        <button class="btn btn-primary" id="prevPageBtn">Previous</button>
+                        <button class="btn white-button" id="prevPageBtn">Previous</button>
                         <span id="pageIndicator" class="ps-2"></span> <!-- Page number display -->
-                        <button class="btn btn-primary ms-2" id="nextPageBtn">Next </button>
+                        <button class="btn white-button ms-2" id="nextPageBtn">Next </button>
                     </div>
                 </div>
 

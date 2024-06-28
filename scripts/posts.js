@@ -318,7 +318,7 @@ usernameLink.innerText = displayUsername;
     postFooter.className = 'card-footer';
 
     const likeButton = document.createElement('button');
-    likeButton.className = 'btn btn-primary';
+    likeButton.className = 'btn white-button';
     likeButton.innerText = `Like (${post.likes.length})`;
     likeButton.onclick = () => likePost(post._id);
 
@@ -327,7 +327,7 @@ usernameLink.innerText = displayUsername;
     // Conditionally add delete button if the logged-in user created the post
     if (post.username === loginData.username) {
         const deleteButton = document.createElement('button');
-        deleteButton.className = 'btn btn-danger';
+        deleteButton.className = 'btn btn-danger mx-2';
         deleteButton.innerText = 'Delete';
         deleteButton.onclick = () => deletePost(post._id);
         postFooter.appendChild(deleteButton);

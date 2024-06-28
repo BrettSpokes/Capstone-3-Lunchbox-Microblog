@@ -73,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Add click event listeners to form toggle buttons for transition animations
     transitionButtons.forEach(element => {
         element.addEventListener('click', function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             disableScroll(); // Disable scrolling before animation starts
             formCard.classList.add('slide-down'); // Slide down current form card
             body.classList.toggle('blue-background'); // Toggle body background color

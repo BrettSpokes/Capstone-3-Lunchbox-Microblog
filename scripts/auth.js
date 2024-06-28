@@ -187,11 +187,16 @@ function editBio() {
 async function saveBio() {
   await updateUser(); // Call updateUser to save changes
   // Update displayed bio
-  const newBio = document.getElementById('bioTextArea').value;
-  document.querySelector('#bioDisplay p').textContent = `Bio: ${newBio}`;
-  // Toggle back to display mode
-  document.getElementById('bioDisplay').style.display = 'block';
-  document.getElementById('bioEdit').style.display = 'none';
+  if (document.getElementById('passwordVerification').value) {
+    const newBio = document.getElementById('bioTextArea').value;
+    document.querySelector('#bioDisplay p').textContent = `Bio: ${newBio}`;
+    // Toggle back to display mode
+    document.getElementById('bioDisplay').style.display = 'block';
+    document.getElementById('bioEdit').style.display = 'none';
+  } else {
+    document.getElementById('bioDisplay').style.display = 'block';
+    document.getElementById('bioEdit').style.display = 'none';
+  }
 }
 
 async function fetchUsersList() {
@@ -268,7 +273,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (window.location.pathname === "/profile.html") {
     const loginData = getLoginData();
     const urlUsername = getUrlParameter('username');
-    
+
     if (loginData.username) {
       const userInfo = await getUserInfo(loginData.username);
       if (userInfo && userInfo.bio) {
@@ -289,7 +294,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (window.location.pathname === "/posts.html") {
     let gavUrl = generateGravIcon(loginData.username);
-      document.getElementById('active-user-icon').src = gavUrl;
+    document.getElementById('active-user-icon').src = gavUrl;
   }
 
 });
