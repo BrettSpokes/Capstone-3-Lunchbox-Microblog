@@ -1,5 +1,4 @@
-/* Global CSS for all pages */
-
+/* Global Variables */
 :root {
     --background-color-default: #5ac9f6;
     --border-color: #002043;
@@ -26,6 +25,7 @@
     --card-max-width: 400px;
 }
 
+/* General Resets and Font Styles */
 * {
     font-family: "Concert One", sans-serif;
     box-sizing: border-box;
@@ -41,17 +41,18 @@
     display: none;
 }
 
+/* Body Styles */
 body {
-    background-color: var(--background-color-default); /* Default background color */
+    background-color: var(--background-color-default);
     margin: 0;
     padding: 0;
-    transition: background-color 0.5s ease-in-out; /* Smooth transition for background color */
+    transition: background-color 0.5s ease-in-out;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
-
+/* Card Styles */
 .card {
     border-radius: 50px;
     padding: 40px;
@@ -69,19 +70,20 @@ body {
 }
 
 .login-card {
-    background: var(--login-card-background); /* Red gradient for login card */
+    background: var(--login-card-background);
 }
 
 .registration-card {
-    background: var(--registration-card-background); /* Blue gradient for registration card */
+    background: var(--registration-card-background);
 }
 
 .login-card, .registration-card {
     color: white;
 }
 
+/* Form Element Styles */
 .form-element {
-    background: var(--form-element-background); /* Black with 0.3 alpha */
+    background: var(--form-element-background);
     border: 2px solid transparent;
     color: white;
     padding: 10px;
@@ -103,6 +105,7 @@ label {
     font-size: 1.2rem;
 }
 
+/* Button Styles */
 button {
     background-color: var(--button-background-color);
     color: black;
@@ -116,7 +119,7 @@ button:hover {
     background-color: var(--button-hover-background-color);
 }
 
-
+/* Image Area Styles */
 .image-area {
     text-align: center;
     margin: var(--image-area-margin) 0;
@@ -126,51 +129,54 @@ button:hover {
     max-width: 100%;
     height: auto;
     border-radius: 10px;
-    min-width: 300px; /* Ensure the image has a minimum width same as the card */
-    max-width: 400px; /* Ensure the image has a maximum width same as the card */
+    min-width: 300px;
+    max-width: 400px;
 }
 
+/* Header Styles */
 header h1 {
     font-weight: bold;
     color: white;
 }
 
+/* Background Overrides */
 .red-background {
-    background-color: var(--login-card-background); /* Override for body background */
+    background-color: var(--login-card-background);
 }
 
 .blue-background {
-    background-color: var(--registration-card-background); /* Override for body background */
+    background-color: var(--registration-card-background);
 }
 
 .yellow-background {
-    background-color: var(--badge-background-color); /* Override for body background */
+    background-color: var(--badge-background-color);
 }
 
 .gradient-transition {
-    background: linear-gradient(to bottom right, var(--login-card-background), #ff1a1a); /* Initial gradient */
+    background: linear-gradient(to bottom right, var(--login-card-background), #ff1a1a);
 }
 
-/* Class to disable scrolling */
+/* Utility Classes */
 .no-scroll {
     overflow: hidden;
 }
 
 .hide-element {
-    display: none; /* Hide the element */
+    display: none;
 }
 
+/* Form Container Styles */
 .form-container {
     position: relative;
-    height: 400px; /* Adjust height as needed */
+    height: 400px;
     overflow: hidden;
 }
 
 .form-card {
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center; 
-    align-items: center; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     transition: transform 0.5s ease-in-out;
 }
 
@@ -182,7 +188,7 @@ header h1 {
     transform: translateY(110%);
 }
 
-/* Post-specific Styling */
+/* Post Styles */
 .post {
     margin-bottom: 15px;
     border: 1px solid var(--post-border-color);
@@ -203,6 +209,7 @@ header h1 {
     color: var(--post-info-color);
 }
 
+/* Badge Styles */
 .badge {
     font-size: 0.9rem;
     padding: 5px 10px;
@@ -217,7 +224,6 @@ header h1 {
     padding: 5px 5%;
     padding-bottom: 1em;
     padding-top: 1em;
-    
 }
 
 .bar-colors p {
@@ -225,7 +231,7 @@ header h1 {
     text-align: center;
 }
 
-/* Profile Card Styling */
+/* Profile Card Styles */
 .profile-card {
     border-radius: 15px;
     padding: 20px;
@@ -259,8 +265,7 @@ header h1 {
     border-color: var(--primary-color-hover);
 }
 
-/* Profile.css */
-
+/* Profile Page Card Styles */
 .profile-page-card {
     border-radius: 50px;
     padding: 20px;
@@ -278,14 +283,14 @@ header h1 {
 }
 
 .profile-page-card .card-body {
-    padding: 0; 
+    padding: 0;
 }
 
 .profile-page-card .row {
-    margin: 0; 
+    margin: 0;
 }
 
-/* Adjustments for Main Content Layout */
+/* Main Content Layout Adjustments */
 .container-fluid {
     padding-left: 15px;
     padding-right: 15px;
@@ -314,20 +319,19 @@ header h1 {
     width: 100%;
 }
 
-/* Keyframe animation for the jiggle effect */
+/* Logo and Icon Animations */
 @keyframes jiggle {
     0%, 100% { transform: rotate(0deg); }
     25% { transform: rotate(-5deg); }
     50% { transform: rotate(5deg); }
     75% { transform: rotate(-5deg); }
-  }
-  
-  /* Apply the jiggle animation on hover */
-  .icon-img:hover {
+}
+
+.icon-img:hover {
     animation: jiggle 0.3s ease-in-out;
-  }
-  
-  .fade-in {
+}
+
+.fade-in {
     animation: fadeIn 1s ease-in-out forwards;
     opacity: 0;
 }
@@ -345,11 +349,6 @@ header h1 {
     margin-right: 45px;
 }
 
-.fade-in {
-    animation: fadeIn 1s ease-in-out forwards;
-    opacity: 0;
-}
-
 @keyframes moveTop {
     0% { transform: translateY(0); }
     100% { transform: translateY(-10%); }
@@ -365,116 +364,101 @@ header h1 {
     100% { opacity: 1; }
 }
 
+/* Button Variants */
 .yellow-button {
-    color: #ffffff; /* Text color */
-    background-color: var(--badge-background-color); /* Background color */
-    border-color: var(--badge-background-color); /* Border color */
+    color: #ffffff;
+    background-color: var(--badge-background-color);
+    border-color: var(--badge-background-color);
 }
 
 .yellow-button:hover {
-    color: #fff; /* Text color on hover */
-    background-color: var(--badge-background-color-hover); /* Background color on hover */
-    border-color: var(--badge-background-color-hover); /* Border color on hover */
+    color: #fff;
+    background-color: var(--badge-background-color-hover);
+    border-color: var(--badge-background-color-hover);
 }
 
 .yellow-button:focus, .yellow-button.focus {
-    color: #fff; /* Text color when focused */
-    background-color: var(--badge-background-color); /* Background color */
-    border-color: var(--badge-background-color); /* Border color when focused */
-    box-shadow: 0 0 0 0.25rem rgba(253, 237, 13, 0.5); /* Focus box shadow */
+    color: #fff;
+    background-color: var(--badge-background-color);
+    border-color: var(--badge-background-color);
+    box-shadow: 0 0 0 0.25rem rgba(253, 237, 13, 0.5);
 }
 
 .yellow-button:disabled, .yellow-button.disabled {
-    color: #fff; /* Text color when disabled */
-    background-color: var(--badge-background-color); /* Background color */
-    border-color: var(--badge-background-color); /* Border color when disabled */
-    opacity: 0.65; /* Opacity when disabled */
+    background-color: var(--badge-background-color);
+    border-color: var(--badge-background-color);
+    opacity: 0.65;
 }
 
 .yellow-button:not(:disabled):not(.disabled):active, .yellow-button:not(:disabled):not(.disabled).active,
 .show > .yellow-button.dropdown-toggle {
-    color: #fff; /* Text color when active */
-    background-color: var(--badge-background-color); /* Background color */
-    border-color: var(--badge-background-color); /* Border color when active */
+    background-color: var(--badge-background-color);
+    border-color: var(--badge-background-color);
 }
 
 .yellow-button:not(:disabled):not(.disabled):active:focus, .yellow-button:not(:disabled):not(.disabled).active:focus,
 .show > .yellow-button.dropdown-toggle:focus {
-    box-shadow: 0 0 0 0.25rem rgba(253, 217, 13, 0.5); /* Box shadow when active and focused */
+    box-shadow: 0 0 0 0.25rem rgba(253, 217, 13, 0.5);
 }
 
 .white-button {
-    color: #000000; /* Text color */
-    background-color: #ffffff; /* Background color */
-    border-color: #ffffff; /* Border color */
+    color: #000000;
+    background-color: #ffffff;
+    border-color: #ffffff;
 }
 
 .white-button:hover {
-    color: #000000; /* Text color on hover */
-    background-color: #e6e6e6; /* Slightly darker background color on hover */
-    border-color: #e6e6e6; /* Slightly darker border color on hover */
+    background-color: #e6e6e6;
+    border-color: #e6e6e6;
 }
 
 .white-button:focus, .white-button.focus {
-    color: #000000; /* Text color when focused */
-    background-color: #ffffff; /* Background color */
-    border-color: #ffffff; /* Border color when focused */
-    box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.25); /* Focus box shadow */
+    box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.25);
 }
 
 .white-button:disabled, .white-button.disabled {
-    color: #000000; /* Text color when disabled */
-    background-color: #ffffff; /* Background color */
-    border-color: #ffffff; /* Border color when disabled */
-    opacity: 0.65; /* Opacity when disabled */
+    background-color: #ffffff;
+    border-color: #ffffff;
+    opacity: 0.65;
 }
 
 .white-button:not(:disabled):not(.disabled):active, .white-button:not(:disabled):not(.disabled).active,
 .show > .white-button.dropdown-toggle {
-    color: #000000; /* Text color when active */
-    background-color: #d9d9d9; /* Slightly darker background color when active */
-    border-color: #d9d9d9; /* Slightly darker border color when active */
+    background-color: #d9d9d9;
+    border-color: #d9d9d9;
 }
 
 .white-button:not(:disabled):not(.disabled):active:focus, .white-button:not(:disabled):not(.disabled).active:focus,
 .show > .white-button.dropdown-toggle:focus {
-    box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.25); /* Box shadow when active and focused */
+    box-shadow: 0 0 0 0.25rem rgba(0, 0, 0, 0.25);
 }
 
 .blue-button {
-    color: #ffffff; /* Text color */
-    background-color: #5ac9f6; /* Background color */
-    border-color: #5ac9f6; /* Border color */
+    color: #ffffff;
+    background-color: #5ac9f6;
+    border-color: #5ac9f6;
 }
 
 .blue-button:hover {
-    color: #ffffff; /* Text color on hover */
-    background-color: #4ab3e4; /* Slightly darker background color on hover */
-    border-color: #4ab3e4; /* Slightly darker border color on hover */
+    background-color: #4ab3e4;
+    border-color: #4ab3e4;
 }
 
 .blue-button:focus, .blue-button.focus {
-    color: #ffffff; /* Text color when focused */
-    background-color: #5ac9f6; /* Background color */
-    border-color: #5ac9f6; /* Border color when focused */
-    box-shadow: 0 0 0 0.25rem rgba(90, 201, 246, 0.5); /* Focus box shadow */
+    box-shadow: 0 0 0 0.25rem rgba(90, 201, 246, 0.5);
 }
 
 .blue-button:disabled, .blue-button.disabled {
-    color: #ffffff; /* Text color when disabled */
-    background-color: #5ac9f6; /* Background color */
-    border-color: #5ac9f6; /* Border color when disabled */
-    opacity: 0.65; /* Opacity when disabled */
+    opacity: 0.65;
 }
 
 .blue-button:not(:disabled):not(.disabled):active, .blue-button:not(:disabled):not(.disabled).active,
 .show > .blue-button.dropdown-toggle {
-    color: #ffffff; /* Text color when active */
-    background-color: #4ab3e4; /* Slightly darker background color when active */
-    border-color: #4ab3e4; /* Slightly darker border color when active */
+    background-color: #4ab3e4;
+    border-color: #4ab3e4;
 }
 
 .blue-button:not(:disabled):not(.disabled):active:focus, .blue-button:not(:disabled):not(.disabled).active:focus,
 .show > .blue-button.dropdown-toggle:focus {
-    box-shadow: 0 0 0 0.25rem rgba(90, 201, 246, 0.5); /* Box shadow when active and focused */
+    box-shadow: 0 0 0 0.25rem rgba(90, 201, 246, 0.5);
 }

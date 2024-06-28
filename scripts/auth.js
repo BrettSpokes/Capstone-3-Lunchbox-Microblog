@@ -1,38 +1,24 @@
 "use strict";
 
 const apiBaseURL = "http://microbloglite.us-east-2.elasticbeanstalk.com";
-// Backup server (mirror):   "https://microbloglite.onrender.com"
 
-// NOTE: API documentation is available at /docs 
-// For example: http://microbloglite.us-east-2.elasticbeanstalk.com/docs
-
-// You can use this function to get the login data of the logged-in
-// user (if any). It returns either an object including the username
-// and token, or an empty object if the visitor is not logged in.
+// Function to get login data from local storage
 function getLoginData() {
   const loginJSON = window.localStorage.getItem("login-data");
   return JSON.parse(loginJSON) || {};
 }
 
-// You can use this function to see whether the current visitor is
-// logged in. It returns either `true` or `false`.
+// Function to check if the user is logged in
 function isLoggedIn() {
   const loginData = getLoginData();
   return Boolean(loginData.token);
 }
 
-// This function is already being used in the starter code for the
-// landing page, in order to process a user's login. READ this code,
-// and feel free to re-use parts of it for other `fetch()` requests
-// you may need to write.
+// Function to handle user login
 async function login(loginData) {
-  // POST /auth/login
   const options = {
     method: "POST",
     headers: {
-      // This header specifies the type of content we're sending.
-      // This is required for endpoints expecting us to send
-      // JSON data.
       "Content-Type": "application/json",
     },
     body: JSON.stringify(loginData),
@@ -42,35 +28,23 @@ async function login(loginData) {
     .then(response => response.json())
     .then(loginData => {
       if (loginData.message === "Invalid username or password") {
-        console.error(loginData)
-        // Here is where you might want to add an error notification 
-        // or other visible indicator to the page so that the user is  
-        // informed that they have entered the wrong login info.
         document.querySelector("#login").loginButton.disabled = false;
-        return null
+        return null;
       }
       window.localStorage.setItem("login-data", JSON.stringify(loginData));
-      window.location.assign("/posts.html");  // redirect
+      window.location.assign("/posts.html");
 
       return loginData;
     });
 }
 
-// This is the `logout()` function you will use for any logout button
-// which you may include in various pages in your app. Again, READ this
-// function and you will probably want to re-use parts of it for other
-// `fetch()` requests you may need to write.
+// Function to handle user logout
 function logout() {
   const loginData = getLoginData();
 
-  // GET /auth/logout
   const options = {
     method: "GET",
     headers: {
-      // This header is how we authenticate our user with the
-      // server for any API requests which require the user
-      // to be logged-in in order to have access.
-      // In the API docs, these endpoints display a lock icon.
       Authorization: `Bearer ${loginData.token}`,
     },
   };
@@ -79,19 +53,14 @@ function logout() {
     .then(response => response.json())
     .then(data => console.log(data))
     .finally(() => {
-      // We're using `finally()` so that we will continue with the
-      // browser side of logging out (below) even if there is an 
-      // error with the fetch request above.
-
-      window.localStorage.removeItem("login-data");  // remove login data from LocalStorage
-      window.location.assign("/");  // redirect back to landing page
+      window.localStorage.removeItem("login-data");
+      window.location.assign("/");
     });
 }
 
-// Custom Code
-
+// Function to get user information from the API
 async function getUserInfo(_currentUser) {
-  const loginData = getLoginData(); // Ensure loginData is fetched here
+  const loginData = getLoginData();
   const myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
   myHeaders.append("Authorization", `Bearer ${loginData.token}`);
@@ -115,6 +84,7 @@ async function getUserInfo(_currentUser) {
   }
 }
 
+// Function to update user bio information
 async function updateUser() {
   const loginData = getLoginData();
   const passwordEntry = document.getElementById('passwordVerification').value;
@@ -142,13 +112,13 @@ async function updateUser() {
       if (!response.ok) {
         throw new Error('Failed to update user information');
       }
-      console.log("User information updated successfully");
     } catch (error) {
       console.error('Error updating user information:', error);
     }
   } else { alert('Please input your password'); }
 }
 
+// Function to register a new user
 function register(registerData) {
   const myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
@@ -170,27 +140,25 @@ function register(registerData) {
   fetch(`${apiBaseURL}/api/users`, requestOptions)
     .then((response) => response.text())
     .then((result) => {
-      console.log(result);
       login(registerData);
     })
     .catch((error) => console.error(error));
 }
 
+// Function to switch bio display mode to edit mode
 function editBio() {
   document.getElementById('bioDisplay').style.display = 'none';
   document.getElementById('bioEdit').style.display = 'block';
-  // Populate textarea with current bio content without the "Bio: " prefix
   const currentBio = document.querySelector('#bioDisplay p').textContent.trim().replace(/^Bio:\s*/, '');
   document.getElementById('bioTextArea').value = currentBio;
 }
 
+// Function to save the updated bio
 async function saveBio() {
-  await updateUser(); // Call updateUser to save changes
-  // Update displayed bio
+  await updateUser();
   if (document.getElementById('passwordVerification').value) {
     const newBio = document.getElementById('bioTextArea').value;
     document.querySelector('#bioDisplay p').textContent = `Bio: ${newBio}`;
-    // Toggle back to display mode
     document.getElementById('bioDisplay').style.display = 'block';
     document.getElementById('bioEdit').style.display = 'none';
   } else {
@@ -199,13 +167,13 @@ async function saveBio() {
   }
 }
 
+// Function to fetch a list of users from the API
 async function fetchUsersList() {
   const myHeaders = new Headers();
   myHeaders.append("accept", "application/json");
-  myHeaders.append("Authorization", `Bearer ${loginData.token}`); // Fix the Authorization header
+  myHeaders.append("Authorization", `Bearer ${loginData.token}`);
 
-  // Generate a random offset between 0 and 300
-  const randomOffset = Math.floor(Math.random() * 301); // 0 to 300 (inclusive)
+  const randomOffset = Math.floor(Math.random() * 301);
 
   const requestOptions = {
     method: "GET",
@@ -215,60 +183,59 @@ async function fetchUsersList() {
 
   try {
     const response = await fetch(`${apiBaseURL}/api/users?offset=${randomOffset}`, requestOptions);
-    const userList = await response.json(); // Parse the response as JSON
-    return userList; // Return the list of users
+    const userList = await response.json();
+    return userList;
   } catch (error) {
     console.error("Error fetching users:", error);
-    return null; // Handle the error gracefully
+    return null;
   }
 }
 
+// Function to get a random subset of users from a list
 function getRandomUsers(userList, count) {
   if (!userList || userList.length === 0) {
-    return []; // Return an empty array if userList is null or empty
+    return [];
   }
 
-  const shuffledUsers = userList.slice(); // Create a copy of the original array
+  const shuffledUsers = userList.slice();
   for (let i = shuffledUsers.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [shuffledUsers[i], shuffledUsers[j]] = [shuffledUsers[j], shuffledUsers[i]]; // Swap elements randomly
+    [shuffledUsers[i], shuffledUsers[j]] = [shuffledUsers[j], shuffledUsers[i]];
   }
 
-  return shuffledUsers.slice(0, count); // Return the first 'count' users
+  return shuffledUsers.slice(0, count);
 }
 
+// Function to populate friends list with random users
 async function populateFriendsList() {
   try {
     const userList = await fetchUsersList();
     if (userList) {
       const randomUsers = getRandomUsers(userList, 4);
-      return randomUsers; // Return the randomly selected users
+      return randomUsers;
     } else {
-      console.log("Failed to fetch users.");
-      return null; // Return null or handle the error appropriately
+      return null;
     }
   } catch (error) {
     console.error("Error fetching users:", error);
-    return null; // Return null in case of an error
+    return null;
   }
 }
 
+// Function to get URL parameter by name
 function getUrlParameter(name) {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get(name);
 }
 
+// Function to generate Gravatar URL based on username
 function generateGravIcon(_username) {
   let hashedEmail = CryptoJS.SHA256(`${_username}@gmail.com`);
-  // Step 2: Construct the Gravatar URL.
   let gravatarUrl = `https://www.gravatar.com/avatar/${hashedEmail}?d=wavatar`;
-  console.log(`gravatarUrl ${gravatarUrl}`);
-  // Step 3: Set the image source to the Gravatar URL.
   return gravatarUrl;
-
 }
 
-
+// Event listener for DOMContentLoaded to initialize profile and posts pages
 document.addEventListener("DOMContentLoaded", async () => {
   if (window.location.pathname === "/profile.html") {
     const loginData = getLoginData();
@@ -289,12 +256,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       let gavUrl = generateGravIcon(urlUsername);
       document.getElementById('external-user-icon').src = gavUrl;
     }
-
   }
 
   if (window.location.pathname === "/posts.html") {
     let gavUrl = generateGravIcon(loginData.username);
     document.getElementById('active-user-icon').src = gavUrl;
   }
-
 });

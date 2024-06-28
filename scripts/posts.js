@@ -1,36 +1,19 @@
 "use strict";
 
+// Initialize base URL and user data
 const apiBaseURLP = "http://microbloglite.us-east-2.elasticbeanstalk.com";
 const loginData = getLoginData();
 const urlUsername = getUrlParameter('username');
 
-let allPosts = []; // To store all fetched posts initially
-let currentPage = 0; // Current page for pagination, starting from 0
+let allPosts = [];
+let currentPage = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
     getUser();
-
     renderFriendsList();
 
-    if (window.location.pathname.includes('/posts.html')) {
-        fetchAllPosts(); // Initial fetch of all posts for sorting
-
-        document.getElementById('sortOptions').addEventListener('change', sortAndRenderPosts);
-        document.getElementById('postForm').addEventListener('submit', createPost);
-
-        document.getElementById('prevPageBtn').addEventListener('click', () => {
-            if (currentPage > 0) {
-                currentPage--;
-                renderPosts();
-            }
-        });
-
-        document.getElementById('nextPageBtn').addEventListener('click', () => {
-            currentPage++;
-            renderPosts();
-        });
-    } else if (window.location.pathname.includes('/profile.html')) {
-        fetchAllPosts(); // Initial fetch of all posts for sorting
+    if (window.location.pathname.includes('/posts.html') || window.location.pathname.includes('/profile.html')) {
+        fetchAllPosts();
 
         document.getElementById('sortOptions').addEventListener('change', sortAndRenderPosts);
         document.getElementById('postForm').addEventListener('submit', createPost);
@@ -47,10 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
             renderPosts();
         });
     }
-
-
 });
 
+// Fetch all posts from the API
 async function fetchAllPosts() {
     const requestOptions = {
         method: "GET",
@@ -61,37 +43,30 @@ async function fetchAllPosts() {
     };
 
     try {
-        const response = await fetch(`${apiBaseURLP}/api/posts?limit=0&offset=0`, requestOptions); // Fetch all posts
+        const response = await fetch(`${apiBaseURLP}/api/posts?limit=0&offset=0`, requestOptions);
         if (!response.ok) {
             throw new Error('Error fetching posts');
         }
-        allPosts = await response.json(); // Store all posts locally
-
+        allPosts = await response.json();
         filterUserPosts();
-        sortAndRenderPosts(); // Sort and render posts after fetching
+        sortAndRenderPosts();
     } catch (error) {
         console.error('Error fetching posts:', error);
     }
 }
 
+// Filter posts based on the profile being viewed
 function filterUserPosts() {
     if (window.location.pathname.includes('/profile.html')) {
-        let filteredPosts;
-        console.log('UrlUsername',urlUsername);
-
-        if (!(urlUsername) || urlUsername == loginData.username) {
-             filteredPosts = allPosts.filter(post => post.username === loginData.username);   
-
-        } else if (urlUsername != loginData.username) {
-             filteredPosts = allPosts.filter(post => post.username === urlUsername);
-
+        if (!urlUsername || urlUsername === loginData.username) {
+            allPosts = allPosts.filter(post => post.username === loginData.username);
+        } else {
+            allPosts = allPosts.filter(post => post.username === urlUsername);
         }
-
-        
-        allPosts = filteredPosts;
     }
 }
 
+// Sort and render posts based on selected criteria
 function sortAndRenderPosts() {
     const sortOption = document.getElementById('sortOptions').value;
     switch (sortOption) {
@@ -106,10 +81,11 @@ function sortAndRenderPosts() {
             allPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             break;
     }
-    currentPage = 0; // Reset to first page after sorting
+    currentPage = 0;
     renderPosts();
 }
 
+// Create a new post
 async function createPost(event) {
     event.preventDefault();
 
@@ -120,14 +96,13 @@ async function createPost(event) {
         return;
     }
 
-    const myHeaders = new Headers();
-    myHeaders.append("accept", "application/json");
-    myHeaders.append("Authorization", `Bearer ${loginData.token}`);
-    myHeaders.append("Content-Type", "application/json");
-
-    const raw = JSON.stringify({
-        text: postText
+    const myHeaders = new Headers({
+        "accept": "application/json",
+        "Authorization": `Bearer ${loginData.token}`,
+        "Content-Type": "application/json"
     });
+
+    const raw = JSON.stringify({ text: postText });
 
     const requestOptions = {
         method: "POST",
@@ -140,7 +115,7 @@ async function createPost(event) {
         const response = await fetch(`${apiBaseURLP}/api/posts`, requestOptions);
         if (response.ok) {
             document.getElementById('posttextarea').value = '';
-            fetchAllPosts(); // After creating a post, refetch all posts for updated list
+            fetchAllPosts();
         } else {
             throw new Error('Error creating post');
         }
@@ -149,6 +124,7 @@ async function createPost(event) {
     }
 }
 
+// Delete a post
 async function deletePost(postId) {
     const requestOptions = {
         method: "DELETE",
@@ -161,7 +137,7 @@ async function deletePost(postId) {
     try {
         const response = await fetch(`${apiBaseURLP}/api/posts/${postId}`, requestOptions);
         if (response.ok) {
-            fetchAllPosts(); // After deleting a post, refetch all posts for updated list
+            fetchAllPosts();
         } else {
             throw new Error('Error deleting post');
         }
@@ -170,16 +146,15 @@ async function deletePost(postId) {
     }
 }
 
+// Like a post
 async function likePost(_postId) {
-    console.log('liking post', _postId);
-    const myHeaders = new Headers();
-    myHeaders.append("accept", "application/json");
-    myHeaders.append("Authorization", `Bearer ${loginData.token}`);
-    myHeaders.append("Content-Type", "application/json");
-
-    const raw = JSON.stringify({
-        "postId": `${_postId}`
+    const myHeaders = new Headers({
+        "accept": "application/json",
+        "Authorization": `Bearer ${loginData.token}`,
+        "Content-Type": "application/json"
     });
+
+    const raw = JSON.stringify({ "postId": `${_postId}` });
 
     const requestOptions = {
         method: "POST",
@@ -191,10 +166,8 @@ async function likePost(_postId) {
     try {
         const response = await fetch(`${apiBaseURLP}/api/likes`, requestOptions);
         if (response.status === 201) {
-            fetchAllPosts(); // After liking a post, refetch all posts for updated list
-        }
-        else if (response.status === 400) {
-            console.log('Duplicate Error');
+            fetchAllPosts();
+        } else if (response.status === 400) {
             await handleDeleteLike(_postId);
         } else {
             throw new Error('Error liking post');
@@ -204,24 +177,22 @@ async function likePost(_postId) {
     }
 }
 
+// Handle deleting a like
 async function handleDeleteLike(_postId) {
-    console.log('Post that has a like', _postId);
     const specificPost = await getSpecificPost(_postId);
-
     const userLike = specificPost.likes.find(like => like.username === loginData.username);
 
     if (userLike) {
-        console.log(`User ${loginData.username} liked this post: like._id`, userLike._id);
         deleteLike(userLike._id);
-    } else {
-        console.log(`User ${loginData.username} did not like this post.`);
     }
 }
 
+// Fetch specific post details
 async function getSpecificPost(postId) {
-    const myHeaders = new Headers();
-    myHeaders.append("accept", "application/json");
-    myHeaders.append("Authorization", `Bearer ${loginData.token}`);
+    const myHeaders = new Headers({
+        "accept": "application/json",
+        "Authorization": `Bearer ${loginData.token}`
+    });
 
     const requestOptions = {
         method: "GET",
@@ -233,9 +204,8 @@ async function getSpecificPost(postId) {
     return response.json();
 }
 
+// Delete a like
 async function deleteLike(_likeId) {
-    console.log('Deleting like with ID:', _likeId);
-
     const requestOptions = {
         method: "DELETE",
         headers: {
@@ -247,8 +217,7 @@ async function deleteLike(_likeId) {
     try {
         const response = await fetch(`${apiBaseURLP}/api/likes/${_likeId}`, requestOptions);
         if (response.ok) {
-            console.log('Like deleted successfully.');
-            fetchAllPosts(); // After deleting a like, refetch all posts for updated list
+            fetchAllPosts();
         } else {
             throw new Error('Error deleting like');
         }
@@ -257,6 +226,7 @@ async function deleteLike(_likeId) {
     }
 }
 
+// Render posts with pagination
 function renderPosts() {
     const postsPerPage = 10;
     const start = currentPage * postsPerPage;
@@ -267,7 +237,6 @@ function renderPosts() {
     postsContainer.innerHTML = '';
 
     paginatedPosts.forEach(post => {
-        console.log(post);
         const postElement = createPostElement(post);
         postsContainer.appendChild(postElement);
     });
@@ -275,6 +244,7 @@ function renderPosts() {
     updatePaginationButtons();
 }
 
+// Create a post element for the UI
 function createPostElement(post) {
     const postElement = document.createElement('div');
     postElement.className = 'card blue-background mb-3';
@@ -282,28 +252,23 @@ function createPostElement(post) {
     const postBody = document.createElement('div');
     postBody.className = 'card-body';
 
-    // Generate Gravatar URL
     const gravatarUrl = generateGravIcon(post.username);
 
-    // Create img element
     const avatarImg = document.createElement('img');
     avatarImg.src = gravatarUrl;
     avatarImg.alt = `${post.username}'s avatar`;
-    avatarImg.className = 'avatar-img me-3 img-fluid rounded-circle'; // Add margin-right for spacing
-    avatarImg.style.height = '3em'; // Adjust height to match h2 element
+    avatarImg.className = 'avatar-img me-3 img-fluid rounded-circle';
+    avatarImg.style.height = '3em';
 
-    // Username as a clickable link
     const usernameLink = document.createElement('a');
-    usernameLink.href = `/profile.html?username=${encodeURIComponent(post.username)}`; // Encode username for URL
-    usernameLink.className = 'card-title h2 text-decoration-none d-inline'; // Make inline to align with img
-    
+    usernameLink.href = `/profile.html?username=${encodeURIComponent(post.username)}`;
+    usernameLink.className = 'card-title h2 text-decoration-none d-inline';
     const displayUsername = post.username.length > 12 ? post.username.slice(0, 12) + '...' : post.username;
-usernameLink.innerText = displayUsername;
-
-    usernameLink.style.cursor = 'pointer'; // Change cursor to pointer for better UX
+    usernameLink.innerText = displayUsername;
+    usernameLink.style.cursor = 'pointer';
     usernameLink.addEventListener('click', (event) => {
-        event.preventDefault(); // Prevent default link behavior
-        window.location.href = usernameLink.href; // Navigate to profile.html with username parameter
+        event.preventDefault();
+        window.location.href = usernameLink.href;
     });
 
     const postText = document.createElement('p');
@@ -324,7 +289,6 @@ usernameLink.innerText = displayUsername;
 
     postFooter.appendChild(likeButton);
 
-    // Conditionally add delete button if the logged-in user created the post
     if (post.username === loginData.username) {
         const deleteButton = document.createElement('button');
         deleteButton.className = 'btn btn-danger mx-2';
@@ -333,14 +297,13 @@ usernameLink.innerText = displayUsername;
         postFooter.appendChild(deleteButton);
     }
 
-    // Create a div to hold avatar and username link
     const headerDiv = document.createElement('div');
-    headerDiv.className = 'd-flex align-items-center mb-2'; // Flexbox container for alignment
+    headerDiv.className = 'd-flex align-items-center mb-2';
 
     headerDiv.appendChild(avatarImg);
     headerDiv.appendChild(usernameLink);
 
-    postBody.appendChild(headerDiv); // Append header div
+    postBody.appendChild(headerDiv);
     postBody.appendChild(postText);
     postBody.appendChild(postTime);
     postBody.appendChild(postFooter);
@@ -349,7 +312,7 @@ usernameLink.innerText = displayUsername;
     return postElement;
 }
 
-
+// Update pagination button states and display
 function updatePaginationButtons() {
     const prevPageBtn = document.getElementById('prevPageBtn');
     const nextPageBtn = document.getElementById('nextPageBtn');
@@ -357,10 +320,10 @@ function updatePaginationButtons() {
     prevPageBtn.disabled = currentPage === 0;
     nextPageBtn.disabled = currentPage >= Math.ceil(allPosts.length / 10) - 1;
 
-    // Display current page number
     document.getElementById('pageIndicator').innerText = `Page ${currentPage + 1}`;
 }
 
+// Display logged-in user's username
 function getUser() {
     const usernameElement = document.getElementById('profile-Username');
     if (loginData && loginData.username) {
@@ -370,25 +333,24 @@ function getUser() {
     }
 }
 
+// Fetch and render friends list
 async function renderFriendsList() {
     try {
         const randomFriends = await populateFriendsList();
         if (randomFriends) {
             const friendsList = document.getElementById("friends-list");
-            friendsList.innerHTML = ""; // Clear any existing list items
+            friendsList.innerHTML = "";
 
             randomFriends.forEach((friendName) => {
                 const listItem = document.createElement("li");
                 listItem.classList.add("list-group-item");
 
-                // Create a clickable link for the username
                 const usernameLink = document.createElement("a");
                 usernameLink.href = `/profile.html?username=${encodeURIComponent(friendName.username)}`;
                 usernameLink.className = "card-title h5 text-decoration-none";
                 usernameLink.innerText = friendName.username;
                 usernameLink.style.cursor = "pointer";
 
-                // Add the link to the list item
                 listItem.appendChild(usernameLink);
                 friendsList.appendChild(listItem);
             });
@@ -399,5 +361,3 @@ async function renderFriendsList() {
         console.error("Error fetching users:", error);
     }
 }
-
-
